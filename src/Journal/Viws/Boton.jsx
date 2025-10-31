@@ -40,12 +40,12 @@ export const Boton = ({ onSeleccion }) => {
             <MenuItem
               onClick={() => handleSeleccion("rojo")}
               sx={{
-                backgroundColor: "#b10000",
+                backgroundColor: "#960404",
                 color: "white",
                 borderRadius: 2,
                 px: 2,
                 py: 1,
-                ":hover": { backgroundColor: "#d40000" },
+                ":hover": { backgroundColor: "#960404" },
               }}
             >
               📍 Marcar rojo
@@ -88,7 +88,7 @@ export const Boton = ({ onSeleccion }) => {
             size="large"
             sx={{
               color: "white",
-              backgroundColor: "error.main",
+              backgroundColor: "#960404",
               ":hover": { backgroundColor: "error.main", opacity: 0.9 },
               zIndex: 2001,
             }}

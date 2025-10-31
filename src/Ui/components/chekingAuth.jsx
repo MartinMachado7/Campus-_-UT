@@ -13,7 +13,8 @@ export const ChekingAuth = () => {
       <Grid container
         direction='row'
         justifyContent='center'>
-        <CircularProgress color="warning"/>
+          
+        <CircularProgress sx={{ color: "#960404" }}/>
      </Grid>
      </Grid>
   )

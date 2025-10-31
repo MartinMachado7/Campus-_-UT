@@ -23,15 +23,16 @@ export const NavBar = ({DrawerWidth, handleDrawerOpen}) => {
         <Toolbar>
           
         <IconButton
+            sx={{ color: "#960404" }} 
             onClick={handleDrawerOpen}
             >
             <MenuOutlined />
           </IconButton>
             <Grid container direction={'row'} justifyContent='space-between' alignItems='center'>
-                    <Typography variant="h6" noWrap component='div'>JournalApp</Typography>
+                    <Typography variant="h6" noWrap component='div'>  Campus-_-UT  </Typography>
                             
                     <IconButton 
-                    color="error"
+                    sx={{ color: "#960404" }} 
                     onClick={onLogout}>
                         <LogoutOutlined/>
                     </IconButton>

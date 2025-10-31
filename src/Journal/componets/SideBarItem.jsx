@@ -31,7 +31,7 @@ export const SideBarItem = ({title, body, id, date, imageUrls =[]}) => {
         <ListItem disablePadding>
                 <ListItemButton onClick={onClickNote}>
                      <ListItemIcon>
-                         <TurnedInNot/>
+                         <TurnedInNot sx={{ color: "#960404" }}/>
                   </ListItemIcon>
                     <Grid container>
                          <ListItemText primary={newTitle} />
