@@ -1,0 +1,99 @@
+/* --- CONTENEDOR PRINCIPAL DEL MAPA --- */
+.map-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* --- CONTENEDOR REAL DEL MAPA --- */
+#map,
+.map-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+/* --- BARRA DE BÚSQUEDA FLOTANTE --- */
+.search-bar-floating {
+  position: absolute;
+  top: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  background-color: rgba(20, 20, 20, 0.85);
+  padding: 8px 12px;
+  border-radius: 12px;
+  z-index: 9999;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.5);
+}
+
+.search-bar-floating input {
+  width: 250px;
+  padding: 6px 10px;
+  border: none;
+  border-radius: 8px;
+  margin-right: 8px;
+  outline: none;
+  background-color: #f0f0f0;
+}
+
+.search-bar-floating button {
+  background-color: #960404;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.search-bar-floating button:hover {
+  background-color: #c30606;
+}
+
+/* --- LISTA DE SUGERENCIAS (MEJORADA) --- */
+.sugerencias-dropdown {
+  position: absolute;
+  top: 45px; /* justo debajo del input */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(255, 255, 255, 0.95);
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  width: 260px;
+  max-height: 180px;
+  overflow-y: auto;
+  z-index: 10000;
+}
+
+.sugerencia-item {
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.sugerencia-item:hover {
+  background-color: #eee;
+}
+
+/* --- RESPONSIVE PARA MÓVILES --- */
+@media (max-width: 768px) {
+  .search-bar-floating {
+    top: 12px;
+    width: 90%;
+    justify-content: center;
+  }
+
+  .search-bar-floating input {
+    width: 60%;
+  }
+
+  .sugerencias-dropdown {
+    width: 80%;
+    max-height: 150px;
+  }
+}
