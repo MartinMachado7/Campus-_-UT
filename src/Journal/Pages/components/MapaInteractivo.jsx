@@ -2,15 +2,15 @@ import React, { useEffect, useRef, useState } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "./MapView.css";
-import { puntosCampus } from "../../data/PuntosCampus";
+import { puntosCampus as puntosIniciales } from "../../data/PuntosCampus";
 import { CrearPuntos } from "./CrearPunto";
 
-
-export const MapaInteractivo = ({accion}) => {
+export const MapaInteractivo = ({ accion, colorSeleccionado = "rojo" }) => {
   const mapRef = useRef(null);
   const markersRef = useRef([]);
   const [busqueda, setBusqueda] = useState("");
   const [sugerencias, setSugerencias] = useState([]);
+  const [puntosCampus, setPuntosCampus] = useState(puntosIniciales);
 
   useEffect(() => {
     const existingMap = L.DomUtil.get("map");
@@ -24,14 +24,17 @@ export const MapaInteractivo = ({accion}) => {
 
     const w = 1500;
     const h = 1000;
-    const bounds = [[0, 0], [h, w]];
+    const bounds = [
+      [0, 0],
+      [h, w],
+    ];
 
     L.imageOverlay("/CampusUt.png", bounds).addTo(map);
     map.fitBounds(bounds);
     mapRef.current = map;
 
-    // Agregar marcadores
-    puntosCampus.forEach((p) => {
+    // Agregar marcadores iniciales
+    puntosIniciales.forEach((p) => {
       const marker = L.marker([p.y, p.x])
         .addTo(map)
         .bindPopup(`<b>${p.nombre}</b>`);
@@ -83,7 +86,7 @@ export const MapaInteractivo = ({accion}) => {
 
   return (
     <div className="map-wrapper">
-      {/*  Barra de búsqueda flotante */}
+      {/* Barra de búsqueda */}
       <div className="search-bar-floating">
         <input
           type="text"
@@ -93,28 +96,35 @@ export const MapaInteractivo = ({accion}) => {
         />
         <button onClick={() => handleBuscar()}>Buscar</button>
 
-       { sugerencias.length > 0 && (
-            <div className="sugerencias-dropdown">
-                {sugerencias.map((s, i) => (
-                <div
-                    key={i}
-                    className="sugerencia-item"
-                    onClick={() => handleBuscar(s)}
-                >
-                    {s}
-                </div>
-                ))}
-         </div>
-            ) }
+        {sugerencias.length > 0 && (
+          <div className="sugerencias-dropdown">
+            {sugerencias.map((s, i) => (
+              <div
+                key={i}
+                className="sugerencia-item"
+                onClick={() => handleBuscar(s)}
+              >
+                {s}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
-      {/*  Contenedor del mapa */}
-    <div style={{ width: "100%", height: "100%", backgroundColor: "white" }}>
-      <div id="map" className="map-container"></div>
-      {mapRef.current && (
-        <CrearPuntos map={mapRef.current} markersRef={markersRef} accion={accion} />
-      )}
-    </div>
+      {/* Contenedor del mapa */}
+      <div style={{ width: "100%", height: "100%", backgroundColor: "white" }}>
+        <div id="map" className="map-container"></div>
+
+        {mapRef.current && (
+          <CrearPuntos
+            map={mapRef.current}
+            markersRef={markersRef}
+            accion={accion}
+            colorSeleccionado={colorSeleccionado}
+            setPuntosCampus={setPuntosCampus}
+          />
+        )}
+      </div>
     </div>
   );
 };
