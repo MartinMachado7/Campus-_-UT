@@ -1,10 +1,12 @@
 // funciones/Crear.js
+// funciones/Crear.js
 import L from "leaflet";
-
+import { collection, addDoc } from "firebase/firestore";
+import { FirebaseAuth, FirebaseDB } from "../../../../firebase/config";
+ // ajusta la ruta según tu estructura
 export const crearPunto = (map, markersRef, color, latlng, setPuntosCampus) => {
   console.log("🟢 Ejecutando crearPunto con datos:", { color, latlng });
 
-  // Crear un pequeño popup con input y botón
   const popupContent = document.createElement("div");
   popupContent.innerHTML = `
     <div style="display:flex; flex-direction:column; gap:6px; font-family:sans-serif;">
@@ -19,27 +21,24 @@ export const crearPunto = (map, markersRef, color, latlng, setPuntosCampus) => {
     </div>
   `;
 
-  // Crear un popup temporal en la posición donde se hizo clic
   const popup = L.popup()
     .setLatLng(latlng)
     .setContent(popupContent)
     .openOn(map);
 
-  // Esperar que el popup se agregue al DOM
   setTimeout(() => {
     const input = popupContent.querySelector("#nombrePuntoInput");
     const btn = popupContent.querySelector("#guardarPuntoBtn");
 
     if (!input || !btn) return;
 
-    btn.addEventListener("click", () => {
+    btn.addEventListener("click", async () => {
       const nombre = input.value.trim();
       if (!nombre) {
         alert("⚠️ Ingrese un nombre para el punto.");
         return;
       }
 
-      // Crear el ícono según color
       const colorFinal = color.toLowerCase();
       const iconUrl =
         colorFinal === "rojo"
@@ -53,20 +52,44 @@ export const crearPunto = (map, markersRef, color, latlng, setPuntosCampus) => {
         popupAnchor: [0, -32],
       });
 
-      // Crear marcador y agregarlo al mapa
       const marker = L.marker(latlng, { icon })
         .addTo(map)
         .bindPopup(`<b>${nombre}</b>`);
 
-      const nuevoPunto = { marker, nombre, lat: latlng.lat, lng: latlng.lng, color: colorFinal };
-      markersRef.current = [...(markersRef.current || []), nuevoPunto];
+      const nuevoPunto = {
+        marker,
+        nombre,
+        lat: latlng.lat,
+        lng: latlng.lng,
+        color: colorFinal,
+      };
 
+      markersRef.current = [...(markersRef.current || []), nuevoPunto];
       if (typeof setPuntosCampus === "function") {
         setPuntosCampus((prev) => [...prev, nuevoPunto]);
       }
 
-      console.log(`✅ Punto creado: "${nombre}" (${colorFinal}) en`, latlng);
-      map.closePopup(); // cerrar el popup
+      // 🟡 Guardar el punto en Firestore
+      try {
+        const user = FirebaseAuth.currentUser;
+        if (user) {
+          await addDoc(collection(FirebaseDB, "markers"), {
+            nombre,
+            lat: latlng.lat,
+            lng: latlng.lng,
+            color: colorFinal,
+            userId: user.uid,
+            createdAt: new Date(),
+          });
+          console.log("✅ Punto guardado en Firestore");
+        } else {
+          console.warn("⚠️ Usuario no autenticado. No se guardó en Firestore.");
+        }
+      } catch (error) {
+        console.error("❌ Error guardando en Firestore:", error);
+      }
+
+      map.closePopup();
     });
   }, 100);
 };
