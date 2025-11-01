@@ -1,21 +1,21 @@
-import { useMemo } from "react"
+import { useMemo, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { IconButton, Typography } from "@mui/material"
 import { AddOutlined } from "@mui/icons-material"
 import { JournalLayout } from "../Layout/JournalLayout"
 import { Boton, NothingSelectedViws } from "../Viws"
 import { starNewNote } from "../../store/journal/thunks"
+import { CrearPuntos } from "./components/CrearPunto"
 
 export const JournalPage = () => {
 
 const Dispatch = useDispatch();
  
-const {isSaving, active} = useSelector(state => state.journal)
+const [accion, setAccion] = useState(null);
 
 
-  const handleAccion = (accion) => {
-    console.log("Acción seleccionada:", accion);
-    // 🔥 Aquí luego vas a manejar los modos del mapa (agregar/eliminar)
+  const handleAccion = (accionSeleccionada) => {
+    setAccion(accionSeleccionada)
   };
 // const deshabilitarBoton =useMemo(() => isSaving === true, [isSaving]);
 
@@ -23,7 +23,7 @@ const {isSaving, active} = useSelector(state => state.journal)
     <JournalLayout>       
       
       <Boton onSeleccion={handleAccion} />
-      <NothingSelectedViws/>
+      <NothingSelectedViws accion={accion}/>
     </JournalLayout>
   )
 }

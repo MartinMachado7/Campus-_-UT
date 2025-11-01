@@ -2,9 +2,11 @@ import React, { useEffect, useRef, useState } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "./MapView.css";
-import { puntosCampus } from "../../data/puntosCampus";
+import { puntosCampus } from "../../data/PuntosCampus";
+import { CrearPuntos } from "./CrearPunto";
 
-export const MapaInteractivo = () => {
+
+export const MapaInteractivo = ({accion}) => {
   const mapRef = useRef(null);
   const markersRef = useRef([]);
   const [busqueda, setBusqueda] = useState("");
@@ -107,7 +109,12 @@ export const MapaInteractivo = () => {
       </div>
 
       {/*  Contenedor del mapa */}
+    <div style={{ width: "100%", height: "100%", backgroundColor: "white" }}>
       <div id="map" className="map-container"></div>
+      {mapRef.current && (
+        <CrearPuntos map={mapRef.current} markersRef={markersRef} accion={accion} />
+      )}
+    </div>
     </div>
   );
 };

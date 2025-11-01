@@ -45,7 +45,7 @@ export const Boton = ({ onSeleccion }) => {
                 borderRadius: 2,
                 px: 2,
                 py: 1,
-                ":hover": { backgroundColor: "#960404" },
+                ":hover": { backgroundColor: "#c50101ff" },
               }}
             >
               📍 Marcar rojo

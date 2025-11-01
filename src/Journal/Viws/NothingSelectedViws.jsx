@@ -1,7 +1,7 @@
 import { Grid, Box } from "@mui/material";
 import { MapaInteractivo } from "../Pages/components/MapaInteractivo";
 
-export const NothingSelectedViws = () => {
+export const NothingSelectedViws = ({accion}) => {
   return (
     <Grid
       container
@@ -27,7 +27,7 @@ export const NothingSelectedViws = () => {
           alignItems: "center",
         }}
       >
-        <MapaInteractivo />
+        <MapaInteractivo accion={accion} />
       </Box>
     </Grid>
   );
